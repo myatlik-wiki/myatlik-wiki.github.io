@@ -1,0 +1,254 @@
+/* Layout: как вики на Fandom — шапка сообщества с обложкой и меню, белая страница статьи с прямыми углами,
+   плавающий справа инфобокс с вкладками картинок, оглавление-рамка, wikitable, навбокс и категории внизу.
+   Цвета: синий дом Якуба Грозного и тусклое золото */
+:root {
+  --backdrop: #d9dde5;        /* фон вокруг страницы */
+  --page: #ffffff;            /* страница статьи */
+  --text: #2f3237;
+  --muted: #6b7079;
+  --border: #d5d8de;
+  --link: #2b5aa6;
+  --link-hover: #1b3f7d;
+  --accent: #1e3461;          /* шапки инфобокса и навбокса */
+  --accent-ink: #ffffff;
+  --accent-2: #e4e9f3;        /* подзаголовки инфобокса, группы навбокса */
+  --gold: #a87b22;
+  --box: #f4f5f7;             /* фон рамок: оглавление, таблицы, инфобокс */
+  --note: #f8f3e6;            /* плашка «за кадром» */
+  --community: #17284b;       /* шапка сообщества без обложки */
+  --community-ink: #ffffff;
+
+  --f-body: "Rubik", "Segoe UI", system-ui, sans-serif;
+  --f-wordmark: "Ruslan Display", "Rubik", Georgia, serif;
+
+  --gutter-l: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --backdrop: #101319; --page: #1b1e24; --text: #dcdee2; --muted: #9a9fa8; --border: #343841;
+    --link: #8db0ee; --link-hover: #b5cdf6; --accent: #2a4479; --accent-ink: #ffffff; --accent-2: #262d3b;
+    --gold: #d9ab52; --box: #22262d; --note: #2b261a; --community: #0f1a33; --community-ink: #ffffff;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --backdrop: #101319; --page: #1b1e24; --text: #dcdee2; --muted: #9a9fa8; --border: #343841;
+  --link: #8db0ee; --link-hover: #b5cdf6; --accent: #2a4479; --accent-ink: #ffffff; --accent-2: #262d3b;
+  --gold: #d9ab52; --box: #22262d; --note: #2b261a; --community: #0f1a33; --community-ink: #ffffff;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--backdrop); color: var(--text); font-family: var(--f-body); font-size: 16px; line-height: 1.625; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--community); }
+a { color: var(--link); text-decoration: none; }
+a:hover { color: var(--link-hover); text-decoration: underline; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+code { font-size: .9em; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- шапка сообщества ---------- */
+.community {
+  --banner: none;
+  position: relative; z-index: 20; color: var(--community-ink);
+  background: linear-gradient(180deg, rgba(10, 18, 38, .35), rgba(10, 18, 38, .85)), var(--banner) center / cover no-repeat, var(--community);
+}
+.community::after { content: ""; position: absolute; inset: auto 0 0; height: 3px; background: var(--gold); }
+.community-inner { max-width: 1240px; margin: 0 auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); padding-block: 22px 0; }
+.community-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.wordmark { font-family: var(--f-wordmark); font-size: clamp(28px, 4vw, 40px); line-height: 1.1; color: var(--community-ink); text-shadow: 0 2px 6px rgba(0, 0, 0, .4); }
+.wordmark:hover { color: var(--community-ink); text-decoration: none; }
+
+.search { position: relative; width: min(300px, 100%); }
+.search input { width: 100%; font: inherit; font-size: 14px; padding: 7px 12px; border: 1px solid rgba(255, 255, 255, .35); border-radius: 3px; background: rgba(255, 255, 255, .12); color: var(--community-ink); }
+.search input::placeholder { color: rgba(255, 255, 255, .7); }
+.search-results { position: absolute; right: 0; top: calc(100% + 4px); width: min(340px, calc(100vw - 32px)); margin: 0; padding: 4px 0; list-style: none; background: var(--page); border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0, 0, 0, .25); z-index: 40; }
+.search-results a { display: flex; gap: 10px; align-items: center; padding: 6px 12px; color: var(--text); }
+.search-results a:hover { background: var(--box); text-decoration: none; }
+.search-results small { display: block; color: var(--muted); font-size: 12px; line-height: 1.3; }
+.search-results .none { padding: 8px 12px; color: var(--muted); font-size: 14px; }
+
+.localnav { display: flex; flex-wrap: wrap; gap: 0 4px; margin-top: 14px; }
+.localnav > a, .dd > a { display: block; padding: 10px 12px 12px; color: var(--community-ink); font-weight: 500; font-size: 15px; }
+.localnav > a:hover, .dd > a:hover { text-decoration: none; background: rgba(255, 255, 255, .1); color: var(--community-ink); }
+.caret { font-size: 11px; opacity: .8; }
+.dd { position: relative; }
+.dd-menu { display: none; position: absolute; left: 0; top: 100%; min-width: 260px; max-height: 70vh; overflow-y: auto; background: var(--page); border: 1px solid var(--border); border-top: 3px solid var(--gold); box-shadow: 0 8px 22px rgba(0, 0, 0, .25); padding: 6px 0; z-index: 40; }
+.dd-wide { min-width: 300px; }
+.dd:hover .dd-menu, .dd:focus-within .dd-menu { display: block; }
+.dd-menu a { display: block; padding: 5px 16px; color: var(--text); font-size: 14px; }
+.dd-menu a:hover { background: var(--box); color: var(--link); text-decoration: none; }
+.series-more { font-weight: 700; margin: 12px 0 4px; }
+.chapter-list { margin: 4px 0 16px; padding-left: 24px; columns: 2 220px; column-gap: 24px; }
+.chapter-list li { margin: 2px 0; break-inside: avoid; }
+.series-nav { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 24px 0 8px; padding-top: 12px; border-top: 1px solid var(--border); font-weight: 700; }
+.cast-sub { font-size: 15px; margin: 14px 0 8px; color: var(--muted); font-weight: 700; }
+.nb-parent { display: block; font-weight: 400; font-size: 12px; color: var(--muted); }
+.dd-group { padding: 8px 16px 2px; font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+
+/* ---------- страница ---------- */
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: var(--gutter-l); padding-right: var(--gutter-r); padding-block: 0 40px; }
+.page { background: var(--page); border: 1px solid var(--border); border-top: 0; }
+.page-header { padding: 22px 28px 14px; border-bottom: 1px solid var(--border); }
+.page-title { margin: 0; font-size: clamp(28px, 4vw, 36px); font-weight: 500; line-height: 1.2; text-wrap: balance; }
+.page-sub { color: var(--muted); font-size: 14px; margin-top: 4px; }
+.crumbs { font-size: 14px; margin-bottom: 4px; }
+
+.page-body { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; padding: 20px 28px 32px; }
+.page-body.single { grid-template-columns: minmax(0, 1fr); }
+.content { min-width: 0; }
+.content::after { content: ""; display: block; clear: both; }
+
+.content h2 { font-size: 24px; font-weight: 500; line-height: 1.3; margin: 28px 0 12px; padding-bottom: 4px; border-bottom: 1px solid var(--border); scroll-margin-top: 16px; }
+.content h3 { font-size: 20px; font-weight: 500; margin: 22px 0 8px; scroll-margin-top: 16px; }
+.content h4 { font-size: 17px; font-weight: 700; margin: 20px 0 6px; scroll-margin-top: 16px; }
+.content p { margin: 0 0 12px; }
+.content ul { margin: 0 0 12px; padding-left: 22px; }
+.content li { margin-bottom: 4px; }
+.content > h2:first-child, .toc + h2 { margin-top: 8px; }
+
+.welcome { font-size: 17px; }
+.lead { font-size: 16px; }
+.small { font-size: 14px; color: var(--muted); }
+.hatnote { font-style: italic; color: var(--muted); padding-left: 16px; margin-bottom: 8px; }
+.logline { font-style: italic; color: var(--muted); }
+
+/* оглавление в рамке, как в MediaWiki */
+.toc { display: inline-block; min-width: 220px; max-width: 100%; margin: 4px 0 16px; padding: 10px 16px 10px 14px; background: var(--box); border: 1px solid var(--border); font-size: 14px; }
+.toc-title { font-weight: 700; text-align: center; margin-bottom: 6px; }
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc ul ul { padding-left: 20px; }
+.toc li { margin: 2px 0; }
+.toc .tocnum { color: var(--text); margin-right: 4px; }
+
+/* пометки «за кадром» */
+.bts { color: var(--muted); font-size: .94em; }
+.bts::before { content: "(за кадром: "; font-style: italic; }
+.bts::after { content: ")"; }
+.bts-box { background: var(--note); border: 1px solid var(--border); border-left: 4px solid var(--gold); padding: 8px 14px; }
+.bts-box .bts { color: var(--text); font-size: .95em; }
+.bts-box .bts::before { content: "За кадром"; display: block; font-style: normal; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--gold); }
+.bts-box .bts::after { content: none; }
+
+/* цитаты */
+.wquote { margin: 12px 0 16px; padding: 6px 18px 6px 44px; position: relative; font-style: italic; }
+.wquote::before { content: "“"; position: absolute; left: 8px; top: -8px; font-size: 52px; line-height: 1; color: var(--gold); font-style: normal; font-family: Georgia, serif; }
+.wquote cite { display: block; font-style: normal; color: var(--muted); font-size: 14px; margin-top: 2px; }
+.wquote cite::before { content: "— "; }
+
+a.mention { border-bottom: 1px dotted currentColor; }
+a.mention:hover { text-decoration: none; border-bottom-style: solid; }
+
+/* wikitable */
+.table-wrap { overflow-x: auto; margin: 0 0 16px; }
+.wikitable { border-collapse: collapse; width: 100%; font-size: 15px; background: var(--page); }
+.wikitable th, .wikitable td { border: 1px solid var(--border); padding: 6px 10px; text-align: left; vertical-align: top; }
+.wikitable thead th { background: var(--accent-2); font-weight: 700; }
+.wikitable tbody th { background: var(--box); font-weight: 500; white-space: nowrap; }
+
+/* плитки персонажей */
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 14px; margin-bottom: 8px; }
+.tile { display: grid; gap: 6px; color: var(--text); text-align: center; font-size: 14px; line-height: 1.3; }
+.tile:hover { text-decoration: none; color: var(--link); }
+.tile-img { display: block; aspect-ratio: 1; border: 1px solid var(--border); overflow: hidden; background: var(--box); }
+.tile-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tile:hover .tile-img { border-color: var(--link); }
+
+/* монограмма вместо картинки */
+.mono { display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: var(--accent-2); color: var(--accent); font-family: var(--f-wordmark); font-size: 44px; line-height: 1; }
+:root[data-theme="dark"] .mono { color: var(--link); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .mono { color: var(--link); } }
+
+/* ---------- инфобокс ---------- */
+.infobox { background: var(--box); border: 1px solid var(--border); font-size: 14px; line-height: 1.45; }
+.infobox-float { float: right; width: 300px; margin: 0 0 16px 24px; }
+.ib-title { background: var(--accent); color: var(--accent-ink); font-size: 19px; font-weight: 500; text-align: center; padding: 10px 12px; line-height: 1.25; }
+.ib-header { background: var(--accent-2); font-weight: 700; text-align: center; padding: 5px 10px; border-top: 1px solid var(--border); }
+.ib-row { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 10px; padding: 7px 12px; border-top: 1px solid var(--border); }
+.ib-label { font-weight: 700; }
+.ib-value { min-width: 0; overflow-wrap: anywhere; }
+.ib-quote { padding: 10px 12px; border-top: 1px solid var(--border); font-style: italic; color: var(--muted); }
+.ib-tabs { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); background: var(--page); }
+.ib-tab { flex: 1 1 auto; font: inherit; font-size: 13px; padding: 6px 10px; border: 0; border-bottom: 3px solid transparent; background: none; color: var(--muted); cursor: pointer; }
+.ib-tab:hover { color: var(--text); }
+.ib-tab.is-active { color: var(--text); font-weight: 500; border-bottom-color: var(--gold); }
+.ib-figure { margin: 0; padding: 8px; text-align: center; }
+.ib-figure img { display: block; width: 100%; height: auto; max-height: 420px; object-fit: contain; margin: 0 auto; }
+.ib-figure figcaption { font-size: 13px; color: var(--muted); padding-top: 6px; }
+.ch-figure { margin: 8px 0 14px; border: 1px solid var(--border); padding: 6px; max-width: 100%; }
+.ch-figure img { display: block; width: 100%; height: auto; }
+.ch-figure figcaption { font-size: 13px; color: var(--muted); padding: 6px 2px 0; line-height: 1.4; }
+.ib-open { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+
+/* правая колонка главной */
+.rail { min-width: 0; display: grid; gap: 20px; align-content: start; }
+.rail-module { border: 1px solid var(--border); }
+.rail-title { margin: 0; padding: 8px 12px; font-size: 15px; font-weight: 700; border-bottom: 3px solid var(--gold); }
+.rail-list { list-style: none; margin: 0; padding: 4px 0; }
+.rail-list a { display: flex; gap: 10px; align-items: center; padding: 6px 12px; color: var(--text); font-size: 14px; line-height: 1.3; }
+.rail-list a:hover { background: var(--box); text-decoration: none; }
+.rail-list small { display: block; color: var(--muted); font-size: 12px; }
+.rail-thumb { flex: none; width: 40px; height: 40px; object-fit: cover; }
+span.rail-thumb { font-size: 20px; }
+
+/* ---------- страница персонажа ---------- */
+.rels { list-style: none; padding-left: 0; }
+.rels li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 12px; align-items: center; margin-bottom: 8px; }
+.rel-thumb { display: block; width: 40px; height: 40px; overflow: hidden; border: 1px solid var(--border); }
+.rel-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rel-thumb .mono { font-size: 20px; }
+
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 16px; }
+.gal-item { margin: 0; border: 1px solid var(--border); background: var(--box); }
+.gal-thumb { display: block; width: 100%; aspect-ratio: 4 / 3; padding: 0; border: 0; background: var(--page); cursor: zoom-in; overflow: hidden; }
+.gal-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gal-from { display: block; margin-top: 4px; font-size: 12px; color: var(--muted); }
+.gal-from a { color: inherit; }
+.gal-item figcaption { padding: 6px 10px 8px; font-size: 13px; color: var(--text); line-height: 1.4; }
+
+.navbox { clear: both; margin: 28px 0 0; border: 1px solid var(--border); font-size: 14px; }
+.nb-title { background: var(--accent); color: var(--accent-ink); text-align: center; font-weight: 700; padding: 6px 10px; }
+.nb-faction { background: var(--accent); color: var(--accent-ink); font-weight: 700; padding: 5px 10px; border-top: 2px solid var(--border); text-align: center; font-size: 13px; letter-spacing: .02em; }
+.nb-sub .nb-group { font-weight: 600; }
+.nb-row { display: grid; grid-template-columns: 210px minmax(0, 1fr); border-top: 1px solid var(--border); }
+.nb-group { background: var(--accent-2); font-weight: 700; padding: 6px 10px; text-align: right; }
+.nb-list { padding: 6px 10px; line-height: 1.7; }
+.nb-sep { color: var(--muted); }
+
+.catlinks { clear: both; margin-top: 16px; padding: 8px 12px; background: var(--box); border: 1px solid var(--border); font-size: 14px; }
+
+.site-foot { padding: 16px 4px; font-size: 13px; color: var(--muted); text-align: center; }
+
+/* ---------- просмотр картинок ---------- */
+.lightbox { position: fixed; inset: 0; z-index: 50; background: rgba(8, 10, 14, .92); display: flex; align-items: center; justify-content: center; gap: 12px;
+  padding: max(16px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(16px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.lightbox[hidden] { display: none; }
+.lb-figure { margin: 0; max-width: min(1100px, 100%); display: grid; gap: 10px; justify-items: center; min-width: 0; }
+.lb-figure img { max-width: 100%; max-height: 80vh; object-fit: contain; }
+.lb-figure figcaption { color: #e8e8e8; font-size: 15px; text-align: center; max-width: 70ch; }
+.lb-count { color: #a5a5a5; font-size: 13px; margin-left: 8px; }
+.lb-btn { flex: none; width: 44px; height: 44px; border: 1px solid rgba(255, 255, 255, .3); background: rgba(255, 255, 255, .08); color: #fff; font-size: 26px; line-height: 1; cursor: pointer; }
+.lb-btn:hover { background: rgba(255, 255, 255, .18); }
+.lb-close { position: absolute; top: max(12px, env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); }
+
+/* ---------- узкие экраны ---------- */
+@media (max-width: 960px) {
+  .page-body { grid-template-columns: minmax(0, 1fr); }
+  .rail { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+}
+@media (max-width: 700px) {
+  .page-header { padding: 16px 16px 12px; }
+  .page-body { padding: 16px 16px 24px; }
+  .infobox-float { float: none; width: 100%; margin: 0 0 16px; }
+  .nb-row { grid-template-columns: minmax(0, 1fr); }
+  .nb-group { text-align: left; }
+  .localnav > a, .dd > a { padding: 8px 10px 10px; font-size: 14px; }
+  .localnav { position: relative; }
+  .dd { position: static; }
+  .dd-menu { left: 0; right: 0; min-width: 0; }
+  .lightbox { gap: 4px; }
+  .lb-prev, .lb-next { width: 36px; }
+  .tiles { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

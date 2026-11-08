@@ -1,0 +1,67 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Мятлик Вики</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="styles.css">
+<!-- Яндекс Метрика. Включается только на опубликованном сайте; trackHash считает переходы по статьям и сериям -->
+<script>
+  if (location.hostname === "myatlik-wiki.github.io") {
+    (function(m,e,t,r,i,k,a){
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=114135521', 'ym');
+    ym(114135521, 'init', {ssr:true, webvisor:true, clickmap:true, referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true, trackHash:true});
+  }
+</script>
+
+<header class="community" id="community">
+  <div class="community-inner">
+    <div class="community-top">
+      <a class="wordmark" id="wordmark" href="#top">Мятлик Вики</a>
+      <div class="search">
+        <label class="visually-hidden" for="search">Поиск по персонажам</label>
+        <input id="search" type="search" placeholder="Поиск по вики" autocomplete="off">
+        <ul class="search-results" id="searchResults" hidden></ul>
+      </div>
+    </div>
+    <nav class="localnav" aria-label="Разделы вики">
+      <div class="dd">
+        <a href="#plot">Сюжет <span class="caret" aria-hidden="true">▾</span></a>
+        <div class="dd-menu" id="ddPlot"></div>
+      </div>
+      <div class="dd">
+        <a href="#cast">Персонажи <span class="caret" aria-hidden="true">▾</span></a>
+        <div class="dd-menu dd-wide" id="ddCast"></div>
+      </div>
+      <a href="#places">Места</a>
+      <a href="#glossary">Словарь</a>
+      <a href="#quotes">Цитаты</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap" id="top">
+  <article class="page" id="home"></article>
+  <article class="page" id="charView" hidden></article>
+  <footer class="site-foot">Фанатская вики</footer>
+</main>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр изображения" hidden>
+  <button type="button" class="lb-btn lb-close" id="lbClose" aria-label="Закрыть">×</button>
+  <button type="button" class="lb-btn lb-prev" id="lbPrev" aria-label="Предыдущее изображение">‹</button>
+  <figure class="lb-figure">
+    <img id="lbImg" alt="">
+    <figcaption><span id="lbCap"></span> <span class="lb-count" id="lbCount"></span></figcaption>
+  </figure>
+  <button type="button" class="lb-btn lb-next" id="lbNext" aria-label="Следующее изображение">›</button>
+</div>
+
+<script>window.WIKI = { series: [] };</script>
+<script src="data/characters.js" charset="utf-8"></script>
+<script src="data/world.js" charset="utf-8"></script>
+<!-- Серии по порядку. Новая серия: data/series/02.js и строка ниже -->
+<script src="data/series/01.js" charset="utf-8"></script>
+<script src="app.js" charset="utf-8"></script>
